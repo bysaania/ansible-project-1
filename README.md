@@ -111,10 +111,10 @@ private_key_file = ~/.ssh/ansible-key.pem
 #### 3.4 Test Ansible can reach your server
 ansible all -m ping -i inventory/hosts.yml
 
-# Expected output:
-# webserver | SUCCESS => {
-#     "ping": "pong"
-# }
+* Expected output:
+* webserver | SUCCESS => {
+*     "ping": "pong"
+* }
 
 If you see `pong`, Ansible can talk to your server. 
 
