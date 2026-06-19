@@ -96,7 +96,7 @@ cd ansible_project_1
 #### 3.2 Tell Ansible about your server
 Open `inventory/hosts.yml` and replace `YOUR_SERVER_IP` with your actual AWS IP:
 
-# inventory/hosts.yml — edit this file
+inventory/hosts.yml — edit this file
 all:
   hosts:
     webserver:
@@ -122,13 +122,13 @@ If you see `pong`, Ansible can talk to your server.
 
 ### PART 4 — Run the Playbook (2 minutes)
 
-# Always do a dry run first (--check means "show me what WOULD happen, don't actually do it")
+##### Always do a dry run first (--check means "show me what WOULD happen, don't actually do it")
 ansible-playbook playbooks/setup.yml --check
 
-# Sample output from my lab
+##### Sample output from my lab
 
 -----------
-% ansible-playbook playbooks/setup.yml --check                                            
+ansible-playbook playbooks/setup.yml --check                                            
 
 PLAY [Setup and configure webserver] ****************************************************************************************************************************************************************************************************************************************************************************************
 
@@ -205,35 +205,35 @@ ERROR: Could not find nginx service
 
 
 
-# If it looks good, run it for real
+##### If it looks good, run it for real
 ansible-playbook playbooks/setup.yml
 
 
-# Before running the playbook, you can verify the status of the AWS EC2 instance
-# From your Mac terminal — open a second terminal window:
+Before running the playbook, you can verify the status of the AWS EC2 instance
+From your Mac terminal — open a second terminal window:
 ssh -i ~/.ssh/ansible-key.pem ubuntu@YOUR_EC2_IP 
 
-# Once inside the server run these one by one:
-# Check Nginx is installed and running:
+##### Once inside the server run these one by one:
+*Check Nginx is installed and running:
 systemctl status nginx
 
 
-# Check your custom web page is there:
+* Check your custom web page is there:
 cat /var/www/html/index.html
 
-# Check if the 'deploy' user exists:
+* Check if the 'deploy' user exists:
 id deploy
 
-# Check firewall is active:
+* Check firewall is active:
 sudo ufw status
 
-# Check Nginx responds locally:
+* Check Nginx responds locally:
 curl http://localhost
 
-# From your browser Open:
+* From your browser Open:
 http://YOUR_EC2_IP
 
-# Sample output from my AWS EC2 Instance  (before running the playbook)
+##### Sample output from my AWS EC2 Instance  (before running the playbook)
 
 $ systemctl status nginx
 Unit nginx.service could not be found.
@@ -252,14 +252,12 @@ curl: (7) Failed to connect to localhost port 80 after 0 ms: Could not connect t
 
 
 
-# Now run the playbook and verify all the above commands again. 
-# You should different results from before and after running the playbook.
+Now run the playbook and verify all the above commands again. 
+You should see different results from before and after running the playbook.
 
 
-You'll see output like:
-PLAY [Setup web server] ************************************
 
-# Sample screen output of working ansible playbook from my lab
+##### Sample screen output of working ansible playbook from my lab
 
 -------------------------
 % ansible-playbook playbooks/setup.yml
@@ -327,8 +325,8 @@ webserver                  : ok=14   changed=10   unreachable=0    failed=0    s
 -------------------------
 
 
-# Run those commands from your EC2 Instance and compare the results after the successful playbook run
-# Sample output from my lab
+Run those commands from your EC2 Instance and compare the results after the successful playbook run
+##### Sample output from my lab
 
 ubuntu@ip-172-31-23-172:~$ systemctl status nginx
 ● nginx.service - A high performance web server and a reverse proxy server
@@ -400,9 +398,9 @@ git push
 
 ---
 
-##  Remember: Terminate Your AWS Instance When Done. 
-## Stopping alone won't help, you will still incur costs for EBS Volumes
-## I learn't it the hard way : P
+###  Remember: Terminate Your AWS Instance When Done. 
+### Stopping alone won't help, you will still incur costs for EBS Volumes
+### I learn't it the hard way : P
 
 
 To avoid any charges, stop your EC2 instance when you're not using it:
@@ -422,7 +420,7 @@ To avoid any charges, stop your EC2 instance when you're not using it:
 
 *Part of my cloud/DevOps learning journey. Built as a beginner — intentionally simple.*  
 *[linkedin.com/in/saania-khanna](https://linkedin.com/in/saania-khanna)*
-# My First Ansible Project — Linux Server Setup Automation
+## My First Ansible Project — Linux Server Setup Automation
 
 
 
