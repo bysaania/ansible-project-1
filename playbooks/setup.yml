@@ -1,0 +1,20 @@
+---
+# playbooks/setup.yml
+
+
+
+
+- name: Setup and configure webserver
+  hosts: all
+  become: true
+
+
+  # Variable definitions for this playbook
+  vars:
+    nginx_port: 80
+    user_name: "deploy"
+    app_name: "My First Ansible Server" 
+  
+  roles:
+    - webserver # This maps to the roles/webserver/ folder
+  

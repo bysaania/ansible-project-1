@@ -1,0 +1,9 @@
+---
+# inventory/hosts.yml
+# This file tells Ansible WHICH servers to manage.
+
+all:
+  hosts:
+    webserver:
+      ansible_host: "Your_Server_IP"  # This is the public IP of my EC2 instance
+      ansible_user: ubuntu  # This is the default username created for an EC2 ubuntu instance    

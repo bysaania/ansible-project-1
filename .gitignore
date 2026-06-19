@@ -1,0 +1,31 @@
+# SSH Keys — NEVER commit these
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# Ansible retry files (created when a playbook fails mid-run)
+*.retry
+
+# Your actual inventory with real IPs (keep hosts.yml as a template in git)
+inventory/hosts.yml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Mac
+.DS_Store
+
+# Ansible cache
+.ansible/
+
+
+# Vim/Vi swap files
+*.swp
+*.swo
+
+# Ansible vault password file
+.vault_pass
+vault_pass.txt

@@ -1,0 +1,8 @@
+---
+# roles/webserver/handlers/main.yml
+
+- name: Restart Nginx  # This needs to match the notify section inside the tasks/main.yml file
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+# No tags needed for a handler

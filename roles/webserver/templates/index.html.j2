@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f1117;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #1a1d27;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 48px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #22c55e20;
+            color: #22c55e;
+            border: 1px solid #22c55e40;
+            padding: 4px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            letter-spacing: 0.02em;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #94a3b8;
+            margin-bottom: 36px;
+            line-height: 1.6;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 36px;
+            text-align: left;
+        }
+
+        .info-item {
+            background: #0f1117;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #e2e8f0;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            word-break: break-all;
+        }
+
+        .tech-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="badge">✓ Deployed with Ansible</div>
+
+        <h1>{{ app_name }}</h1>
+        <p class="subtitle">
+            This server was configured automatically using Ansible.<br>
+            No manual SSH commands. Just code.
+        </p>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Server IP</div>
+                {# Ansible fills in the actual server IP here at deploy time #}
+                <div class="info-value">{{ ansible_host }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Deployed by</div>
+                <div class="info-value">Ansible Playbook</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Web Server</div>
+                <div class="info-value">Nginx</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">OS</div>
+                <div class="info-value">Ubuntu 24.04 LTS</div>
+            </div>
+        </div>
+
+        <div class="tech-row">
+            <span class="tech-tag">Ansible</span>
+            <span class="tech-tag">Ubuntu</span>
+            <span class="tech-tag">Nginx</span>
+            <span class="tech-tag">UFW Firewall</span>
+            <span class="tech-tag">AWS EC2</span>
+        </div>
+    </div>
+</body>
+</html>

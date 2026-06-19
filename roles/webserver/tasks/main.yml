@@ -1,0 +1,158 @@
+---
+# roles/webserver/tasks/main.yml
+
+# Ansible reads tasks top to bottom and runs them in order.
+
+# 1. System updates
+# 2. Install software
+# 3. Create Deploy User and add to sudo group
+# 4. Configure firewall UFW - allow ssh, http then enable firewall
+# 5. Configure nginx with a custom template (use notify handler), then delete the page
+# 6. Start and enable nginx services
+# 7. Verify nginx services are responding and print the verification
+
+# -------------------------------------
+
+
+# ---- 1. System Updates --------------------
+
+
+# sudo apt update command
+# using the ansible.builtin module
+- name: update the apt package cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600  # Only update if the last one is more than 1 hour ago
+  tags: [packages]
+
+
+
+# sudo apt-get dist-upgrade command
+# upgrades packages and removes/adds dependencies of needed
+
+- name: upgrade the OS packages
+  ansible.builtin.apt:
+    upgrade: dist
+  tags: [packages]
+
+
+# ---- 2. Install Software --------------------
+
+# Install nginx, ufw, curl, git
+
+- name: Install all software packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+
+  loop:
+    - nginx
+    - ufw
+    - curl
+    - git
+  tags: [packages]
+
+
+# ---- 3. Create Deploy User --------------------
+
+- name: Create new user and add to the sudo group
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+    create_home: yes
+    state: present
+  tags: [users]
+
+
+# ---- 4. Configure Firewall UFW -------------------- 
+
+# Start with allowing SSH first
+
+- name: Allow SSH through firewall
+  community.general.ufw:
+    rule: allow
+    port: ssh  # Or you can mention "22"
+    proto: tcp
+  tags: [firewall]  
+
+
+- name: Allow HTTP through firewall
+  community.general.ufw:
+    rule: allow
+    port: "{{ nginx_port | string }}" # Or you can mention http or "80" as a hard coded value
+    proto: tcp
+  tags: [firewall]
+
+
+- name: Enable firewall with default deny policy
+  community.general.ufw:
+    state: enabled
+    policy: deny
+  tags: [firewall]
+
+
+
+
+
+
+# ---- 5. Configure nginx --------------------
+
+- name: Deploy a custom web page using a template
+  ansible.builtin.template:
+    src: index.html.j2     # path on laptop
+    dest: /var/www/html/index.html # Path on nginx server
+    owner: www-data # Deafult nginx user and group
+    group: www-data
+    mode: "0644"
+  notify: Restart Nginx  # Added this in the handler folder
+  tags: [nginx]  
+
+
+
+# This deletes the default "Welcome to nginx!" page
+- name: Delete the default nginx page
+  ansible.builtin.file:
+    path: /var/www/html/index.nginx-debian.html
+    state: absent
+  tags: [nginx]
+
+
+
+# ---- 6. Start and Enable Nginx Service --------------------
+
+- name: Start and Enable Nginx server
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+  tags: [nginx]
+
+
+
+
+
+# ---- 7. Verify Everything works fine --------------------
+- name: Check if nginx is working
+  ansible.builtin.uri:
+    url: "http://localhost:{{ nginx_port }}"
+    status_code: 200  # HTTP 200 = success
+  register: http_response  # The result is stored in this variable
+  tags: [verify]
+
+
+
+- name: Print the verification when successful
+  ansible.builtin.debug:
+    msg: "Nginx webserver is Up and running at http://{{ ansible_host }}"
+  when: http_response.status == 200
+  tags: [verify]
+
+- name: Print when it fails
+  ansible.builtin.debug:
+    msg: "Webserver is not responding"
+  when: http_response.status != 200
+  tags: [verify]
+    
+
